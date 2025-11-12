@@ -15,6 +15,7 @@ import EditTaskForm from '@features/editTaskForm/EditTaskForm';
 import { time } from '@shared/lib/utils/formatTime';
 import { Button } from '@shared/ui/button/Button';
 import { Card } from '@shared/ui/card/Card';
+import { useConfirm } from '@shared/ui/confirm-modal/hooks/useConfirm';
 
 interface TaskCardProps {
   task: ITask;
@@ -86,6 +87,7 @@ const TaskCardActions: React.FC<{ task: ITask; onEdit: () => void }> = ({ task, 
   const [stopTask] = useStopTaskMutation();
   const [completeTask] = useCompleteTaskMutation();
   const [deleteTask] = useDeleteTaskMutation();
+  const { open } = useConfirm();
 
   const handleStart = async () => {
     await startTask(task.id);
@@ -100,7 +102,12 @@ const TaskCardActions: React.FC<{ task: ITask; onEdit: () => void }> = ({ task, 
   };
 
   const handleDelete = async () => {
-    await deleteTask(task.id);
+    open({
+      message: 'Подтверждаете удаление?',
+      onConfirm: async () => {
+        await deleteTask(task.id);
+      },
+    });
   };
 
   return (

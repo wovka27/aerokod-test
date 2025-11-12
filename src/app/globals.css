@@ -17,3 +17,9 @@ body {
         text-wrap: balance;
     }
 }
+
+@layer base {
+    input[type="time"]::-webkit-calendar-picker-indicator {
+        @apply invert brightness-150;
+    }
+}

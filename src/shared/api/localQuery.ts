@@ -1,6 +1,6 @@
 export const localQuery = async <T>(fn: () => T | Promise<T>) => {
   try {
-    const result = await Promise.resolve(fn());
+    const result = fn();
 
     if (result === undefined || result === null) {
       return { data: [] as T };

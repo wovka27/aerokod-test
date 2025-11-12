@@ -113,15 +113,28 @@ const TaskCardActions: React.FC<{ task: ITask; onEdit: () => void }> = ({ task, 
   };
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-2 items-center justify-end">
       {task.status === TaskStatus.PENDING && (
         <Button
           variant="primary"
           size="sm"
           onClick={handleStart}
-          className="flex-1"
         >
-          Начать
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path
+              d="M5.5 3.8l7 5.2-7 5.2V3.8z"
+              fill="currentColor"
+            />
+          </svg>
         </Button>
       )}
 

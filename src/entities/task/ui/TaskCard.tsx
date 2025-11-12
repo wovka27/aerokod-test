@@ -26,16 +26,18 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, isActive }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
-    <Card className="p-6 hover:border-gray-700 transition-all">
+    <Card className="p-6 hover:border-gray-700 transition-all flex flex-col justify-between">
       <TaskCardHeader task={task} />
-      <TaskCardProgress
-        task={task}
-        isActive={isActive}
-      />
-      <TaskCardActions
-        task={task}
-        onEdit={() => setIsEditModalOpen(true)}
-      />
+      <div>
+        <TaskCardProgress
+          task={task}
+          isActive={isActive}
+        />
+        <TaskCardActions
+          task={task}
+          onEdit={() => setIsEditModalOpen(true)}
+        />
+      </div>
       <EditTaskForm
         task={task}
         isOpen={isEditModalOpen}
@@ -72,12 +74,12 @@ const TaskCardProgress: React.FC<TaskCardProps> = ({ task, isActive }) => {
 const TaskCardHeader: React.FC<{ task: ITask }> = ({ task }) => {
   const statusBadge = getStatusBadge(task);
   return (
-    <div className="flex items-start justify-between mb-4">
-      <div className="flex-1">
+    <div className="flex flex-col mb-4">
+      <div className="flex justify-between gap-5">
         <h3 className="text-lg font-semibold text-white mb-2">{task.name}</h3>
-        <p className="text-gray-400 text-sm">{task.description}</p>
+        <div className="ml-4">{statusBadge}</div>
       </div>
-      <div className="ml-4">{statusBadge}</div>
+      <p className="text-gray-400 text-sm">{task.description}</p>
     </div>
   );
 };

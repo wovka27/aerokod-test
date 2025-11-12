@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
+import { filterSelector } from '@entities/filter/model/filter.selector';
 import { clearFilter, setFilter } from '@entities/filter/model/filter.slice';
 import { SearchFilterType } from '@entities/task/model/task.types';
 import { useDebounced } from '@shared/lib/hooks/debounced';
@@ -9,9 +10,9 @@ import { useAppDispatch, useAppSelector } from '@shared/lib/hooks/redux';
 import { SearchInput } from '@shared/ui/search-input/SearchInput';
 import Select from '@shared/ui/select/Select';
 
-const FilterTasks: React.FC = () => {
+const Filter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { type, value: storeValue } = useAppSelector((state) => state.filter);
+  const { type, value: storeValue } = useAppSelector(filterSelector);
 
   const [value, setValue] = useState(storeValue);
 
@@ -106,4 +107,4 @@ const FilterTasks: React.FC = () => {
   );
 };
 
-export default FilterTasks;
+export default Filter;

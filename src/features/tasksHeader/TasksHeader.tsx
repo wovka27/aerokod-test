@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
+import Filter from '@entities/filter/ui/Filter';
 import StatList from '@entities/stat-list/ui/StatList';
 import CreateTaskForm from '@features/createTaskForm/CreateTaskForm';
-import FilterTasks from '@features/filterTasks/FilterTasks';
 import { Button } from '@shared/ui/button/Button';
 
 const TasksHeader = () => {
@@ -41,7 +41,7 @@ const TasksHeader = () => {
       </div>
 
       <StatList />
-      <FilterTasks />
+      <Filter />
       <CreateTaskForm
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

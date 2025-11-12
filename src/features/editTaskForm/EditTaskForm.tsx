@@ -13,6 +13,7 @@ const EditTaskForm: React.FC<Omit<ModalProps, 'title' | 'children'> & { task: IT
 
   return (
     <TaskForm
+      title="Редактирование задачи"
       isOpen={isOpen}
       onClose={onClose}
       isLoading={isLoading}

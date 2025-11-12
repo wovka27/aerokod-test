@@ -8,6 +8,7 @@ const CreateTaskForm: React.FC<Omit<ModalProps, 'title' | 'children'>> = ({ isOp
 
   return (
     <TaskForm
+      title="Создание задачи"
       isOpen={isOpen}
       onClose={onClose}
       isLoading={isLoading}

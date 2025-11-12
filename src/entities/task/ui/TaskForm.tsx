@@ -9,9 +9,10 @@ type IProps = Omit<ModalProps, 'title' | 'children'> & {
   submit: (dto: UpdateTaskDto | CreateTaskDto) => any;
   initialValues?: Record<string, any>;
   isLoading: boolean;
+  title: string;
 };
 
-const TaskForm: React.FC<IProps> = ({ onClose, isOpen, submit, initialValues, isLoading }) => {
+const TaskForm: React.FC<IProps> = ({ onClose, isOpen, submit, initialValues, isLoading, title }) => {
   const onSubmit: (values: Record<string, any>) => void | Promise<void> = async (values) => {
     const dto = {
       name: values.name,
@@ -29,7 +30,7 @@ const TaskForm: React.FC<IProps> = ({ onClose, isOpen, submit, initialValues, is
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Создать новую задачу"
+      title={title}
     >
       <FormGenerator
         fields={fields}

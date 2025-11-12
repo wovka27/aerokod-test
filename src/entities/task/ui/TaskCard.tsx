@@ -100,9 +100,7 @@ const TaskCardActions: React.FC<{ task: ITask; onEdit: () => void }> = ({ task, 
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Вы уверены, что хотите удалить эту задачу?')) {
-      await deleteTask(task.id);
-    }
+    await deleteTask(task.id);
   };
 
   return (

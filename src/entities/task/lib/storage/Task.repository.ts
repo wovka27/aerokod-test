@@ -7,7 +7,6 @@ import { TaskStatus } from '@entities/task/model/task.types';
 import { time } from '@shared/lib/utils/formatTime';
 
 const STORAGE_KEY = 'tasks-db';
-const msToMinutes = (ms: number) => ms / 60000;
 
 export class TaskRepository {
   private static read(): ITask[] {
@@ -28,17 +27,19 @@ export class TaskRepository {
     return task;
   }
 
+  private static msToSeconds = (ms: number) => Math.floor(ms / 1000);
+
   private static stopActiveTasks(tasks: ITask[]): ITask[] {
     const now = Date.now();
 
     return tasks.map((t) => {
       if (t.status === TaskStatus.IN_PROGRESS && t.startedAt) {
         const deltaMs = now - t.startedAt;
-        const deltaMinutes = Math.floor(msToMinutes(deltaMs));
+        const deltaSeconds = this.msToSeconds(deltaMs);
         const updated: ITask = {
           ...t,
           status: TaskStatus.PENDING,
-          spentTime: t.spentTime + deltaMinutes,
+          spentTime: t.spentTime + deltaSeconds,
           startedAt: undefined,
         };
         return this.updateStatus(updated);
@@ -56,18 +57,15 @@ export class TaskRepository {
       id: uuid(),
       name: dto.name,
       description: dto.description,
-      estimatedTime: time.toMinutes(dto.estimatedTime as string),
+      estimatedTime: time.toSeconds(dto.estimatedTime + ''),
       spentTime: 0,
       createdAt: Date.now(),
       status: TaskStatus.PENDING,
     };
 
     const tasks = this.read();
-
     tasks.push(newTask);
-
     this.write(tasks);
-
     return newTask;
   }
 
@@ -76,12 +74,50 @@ export class TaskRepository {
     tasks = this.stopActiveTasks(tasks);
 
     tasks = tasks.map((t) =>
-      t.id === id ? { ...t, ...dto, estimatedTime: time.toMinutes(dto.estimatedTime as string) } : t
+      t.id === id
+        ? {
+            ...t,
+            ...dto,
+            estimatedTime: dto.estimatedTime ? time.toSeconds(dto.estimatedTime + '') : t.estimatedTime,
+          }
+        : t
     );
 
     this.write(tasks);
-
     return tasks.find((t) => t.id === id)!;
+  }
+
+  static stopTask(id: string): ITask {
+    const now = Date.now();
+    let updatedTask: ITask | undefined;
+
+    let tasks = this.read();
+
+    tasks = tasks.map((t) => {
+      if (t.id === id && t.status === TaskStatus.IN_PROGRESS && t.startedAt) {
+        const deltaMs = now - t.startedAt;
+        const deltaSeconds = this.msToSeconds(deltaMs);
+
+        const updated: ITask = {
+          ...t,
+          status: TaskStatus.PENDING,
+          spentTime: t.spentTime + deltaSeconds,
+          startedAt: undefined,
+        };
+
+        updatedTask = this.updateStatus(updated);
+        return updatedTask;
+      }
+      return t;
+    });
+
+    this.write(tasks);
+
+    if (!updatedTask) {
+      throw new Error({ title: 'not found', statusCode: 404 });
+    }
+
+    return updatedTask;
   }
 
   static delete(id: string) {
@@ -102,39 +138,6 @@ export class TaskRepository {
     this.write(tasks);
 
     return tasks.find((t) => t.id === id)!;
-  }
-
-  static stopTask(id: string): ITask {
-    const now = Date.now();
-    let updatedTask: ITask | undefined;
-
-    let tasks = this.read();
-
-    tasks = tasks.map((t) => {
-      if (t.id === id && t.status === TaskStatus.IN_PROGRESS && t.startedAt) {
-        const deltaMs = now - t.startedAt;
-        const deltaMinutes = Math.floor(msToMinutes(deltaMs));
-
-        const updated: ITask = {
-          ...t,
-          status: TaskStatus.PENDING,
-          spentTime: t.spentTime + deltaMinutes,
-          startedAt: undefined,
-        };
-
-        updatedTask = this.updateStatus(updated);
-        return updatedTask;
-      }
-      return t;
-    });
-
-    this.write(tasks);
-
-    if (!updatedTask) {
-      throw new Error({ title: `Task with id "${id}" not found or not running`, statusCode: 404 });
-    }
-
-    return updatedTask;
   }
 
   static complete(id: string): ITask {

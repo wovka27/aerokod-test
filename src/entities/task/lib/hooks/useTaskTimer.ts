@@ -21,8 +21,8 @@ export const useTaskTimer = (task: ITask | null): TaskTimerState => {
 
     const updateTime = () => {
       const now = Date.now();
-      const elapsedMinutes = (now - task.startedAt!) / 60_000;
-      const total = task.spentTime + elapsedMinutes;
+      const elapsedSeconds = Math.floor((now - task.startedAt!) / 1_000);
+      const total = task.spentTime + elapsedSeconds;
       setCurrentTime(total);
       setIsOverdue(total >= +task.estimatedTime);
     };

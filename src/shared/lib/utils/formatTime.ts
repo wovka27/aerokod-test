@@ -1,18 +1,16 @@
 export const time = {
-  toHhMm: (minutes: number): string => {
-    const h = Math.floor(minutes / 60)
-      .toString()
-      .padStart(2, '0');
-    const m = Math.floor(minutes % 60)
-      .toString()
-      .padStart(2, '0');
-    return `${h}:${m}`;
-  },
-  toMinutes: (val: string): number => {
-    const [h, m] = val.split(':').map(Number);
+  toHhMm: (seconds: number): string => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
 
-    return h * 60 + m;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   },
-
-  fromSeconds: (seconds: number): number => seconds / 60,
+  toSeconds: (input: string): number => {
+    const trimmed = input.trim();
+    if (trimmed.includes(':')) {
+      const [h, m] = trimmed.split(':').map(Number);
+      return (h || 0) * 3600 + (m || 0) * 60;
+    }
+    return Math.max(0, Number(trimmed) * 60);
+  },
 };

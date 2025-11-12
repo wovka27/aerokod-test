@@ -12,7 +12,7 @@ const TasksHeader = () => {
 
   return (
     <div className="flex flex-col gap-5 mt-10">
-      <div className="flex items-center justify-between">
+      <div className="items-center justify-between flex flex-wrap gap-5">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Мои задачи</h1>
           <p className="text-gray-400">Отслеживайте время выполнения ваших задач</p>

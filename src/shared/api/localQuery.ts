@@ -1,4 +1,4 @@
-export const localQuery = async <T>(fn: () => T | Promise<T>) => {
+export const localQuery = async <T>(fn: () => T) => {
   try {
     const result = fn();
 

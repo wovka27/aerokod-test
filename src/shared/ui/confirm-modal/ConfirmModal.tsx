@@ -1,39 +1,42 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@shared/lib/hooks/redux';
 import { Button } from '@shared/ui/button/Button';
-import { closeConfirmModal } from '@shared/ui/confirm-modal/model/confirm.slice';
 import { Modal } from '@shared/ui/modal/Modal';
 
-const ConfirmModal: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { isOpen, title, message, onConfirm, onCancel } = useAppSelector((state) => state.confirmModal);
+type ConfirmModalProps = {
+  isOpen: boolean;
+  title: string;
+  message?: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+};
 
-  const handleCancel = () => {
-    onCancel?.();
-    dispatch(closeConfirmModal());
-  };
-
-  const handleConfirm = () => {
-    onConfirm?.();
-    dispatch(closeConfirmModal());
-  };
-
+const ConfirmModal: React.FC<ConfirmModalProps> = ({
+  isOpen,
+  title,
+  message,
+  confirmText,
+  cancelText,
+  onConfirm,
+  onCancel,
+}) => {
   return (
     <Modal
-      title={title!}
+      title={title}
       isOpen={isOpen}
-      onClose={() => dispatch(closeConfirmModal())}
+      onClose={onCancel}
     >
-      <h3 className="text-gray-300 text-lg mb-6">{message}</h3>
-      <div className="grid grid-cols-2 gap-6">
+      {message && <p className="text-gray-300 mb-6">{message}</p>}
+      <div className="grid grid-cols-2 gap-4">
         <Button
           variant="ghost"
-          onClick={handleCancel}
+          onClick={onCancel}
         >
-          Отмена
+          {cancelText}
         </Button>
-        <Button onClick={handleConfirm}>Oк</Button>
+        <Button onClick={onConfirm}>{confirmText}</Button>
       </div>
     </Modal>
   );

@@ -5,7 +5,7 @@ import { Header } from '@widgets/header/Header';
 import type { Metadata } from 'next';
 
 import { StoreProvider } from '@shared/lib/providers/StoreProvider';
-import ConfirmModal from '@shared/ui/confirm-modal/ConfirmModal';
+import { ConfirmProvider } from '@shared/ui/confirm-modal/providers/ConfirmProvider';
 
 import './globals.css';
 
@@ -35,8 +35,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-[#0B0919]`}>
         <Header />
         <StoreProvider>
-          {children}
-          <ConfirmModal />
+          <ConfirmProvider>{children}</ConfirmProvider>
         </StoreProvider>
         <Footer />
       </body>

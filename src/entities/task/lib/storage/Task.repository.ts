@@ -84,7 +84,7 @@ export class TaskRepository {
     );
 
     this.write(tasks);
-    return tasks.find((t) => t.id === id)!;
+    return this.getById(id);
   }
 
   static stopTask(id: string): ITask {
@@ -137,7 +137,7 @@ export class TaskRepository {
 
     this.write(tasks);
 
-    return tasks.find((t) => t.id === id)!;
+    return this.getById(id);
   }
 
   static complete(id: string): ITask {
@@ -162,5 +162,11 @@ export class TaskRepository {
       }
       return false;
     });
+  }
+
+  static getById(id: string) {
+    const task = this.read().find((t) => t.id === id);
+    if (!task) throw new Error({ title: 'not found', statusCode: 404 });
+    return task;
   }
 }

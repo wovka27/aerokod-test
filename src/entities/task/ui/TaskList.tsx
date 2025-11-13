@@ -1,19 +1,26 @@
 import { filterSelector } from '@entities/filter/model/filter.selector';
 import { useGetFilteredTasksQuery, useGetTasksQuery } from '@entities/task/api/task.api';
-import { TaskStatus } from '@entities/task/model/task.types';
-import { TaskCard } from '@entities/task/ui/TaskCard';
 import { TaskCardSkeleton } from '@entities/task/ui/TaskCardSkeleton';
+import TaskListItem from '@entities/task/ui/TaskListItem';
 import { useAppSelector } from '@shared/lib/hooks/redux';
 
 export const TaskList: React.FC = () => {
   const filter = useAppSelector(filterSelector);
 
-  const { data: filteredTasks = [], isLoading: isFilteredLoading } = useGetFilteredTasksQuery(filter, {
-    skip: !filter.value,
+  const { allTasks, isAllLoading } = useGetTasksQuery(undefined, {
+    skip: !!filter.value,
+    selectFromResult: ({ data, isLoading }) => ({
+      allTasks: data ?? [],
+      isAllLoading: isLoading,
+    }),
   });
 
-  const { data: allTasks = [], isLoading: isAllLoading } = useGetTasksQuery(undefined, {
-    skip: !!filter.value,
+  const { filteredTasks, isFilteredLoading } = useGetFilteredTasksQuery(filter, {
+    skip: !filter.value,
+    selectFromResult: ({ data, isLoading }) => ({
+      filteredTasks: data ?? [],
+      isFilteredLoading: isLoading,
+    }),
   });
 
   const tasks = filter.value ? filteredTasks : allTasks;
@@ -26,10 +33,9 @@ export const TaskList: React.FC = () => {
   return (
     <div className="grid gap-5 md:grid-cols-3 grid-cols-1">
       {tasks.map((task) => (
-        <TaskCard
+        <TaskListItem
           key={task.id}
           task={task}
-          isActive={task.status === TaskStatus.IN_PROGRESS}
         />
       ))}
     </div>

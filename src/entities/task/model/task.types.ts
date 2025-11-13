@@ -26,3 +26,55 @@ export interface CreateTaskDto extends Pick<ITask, 'name' | 'description'> {
 }
 
 export type UpdateTaskDto = Partial<CreateTaskDto>;
+
+export interface TaskCardProps {
+  task: ITask;
+  children: React.ReactNode;
+}
+
+export interface TaskCardContextType {
+  task: ITask;
+  currentTime?: number;
+  isOverdue?: boolean;
+  openEdit: () => void;
+}
+
+export interface TaskCardProgressProps {
+  variant?: 'card' | 'detail';
+}
+
+export interface SpentTimeProps {
+  currentTime?: number;
+  isOverdue?: boolean;
+}
+
+export interface PercentProps {
+  currentTime?: number;
+}
+
+export interface ProgressBarProps {
+  currentTime?: number;
+  isOverdue?: boolean;
+}
+
+export interface TitleProps {
+  variant?: 'card' | 'detail';
+}
+
+export type TaskCardType = React.FC<TaskCardProps & { className?: string }> & {
+  Header: React.FC<React.PropsWithChildren>;
+  Title: React.FC<TitleProps>;
+  Badge: React.FC;
+  SpentTime: React.FC<SpentTimeProps>;
+  Percent: React.FC<PercentProps>;
+  EstimatedTime: React.FC;
+  ProgressBar: React.FC<ProgressBarProps>;
+  Description: React.FC;
+  Progress: React.FC<React.PropsWithChildren<TaskCardProgressProps>>;
+  Actions: React.FC<React.PropsWithChildren>;
+  Edit: React.FC;
+  Delete: React.FC;
+  Start: React.FC;
+  Stop: React.FC;
+  Complete: React.FC;
+};

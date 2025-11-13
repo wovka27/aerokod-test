@@ -5,14 +5,24 @@ import { localQuery } from '@shared/api/localQuery';
 
 export const taskApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    getTaskById: build.query<ITask, string>({
+      queryFn: (id) => localQuery(() => TaskRepository.getById(id)),
+      providesTags: (_res, _err, id) => [{ type: 'Task', id }],
+    }),
     getTasks: build.query<ITask[], void>({
       queryFn: () => localQuery(() => TaskRepository.getAll()),
-      providesTags: ['Task'],
+      providesTags: (res) =>
+        res
+          ? [...res.map(({ id }) => ({ type: 'Task' as const, id })), { type: 'Task', id: 'LIST' }]
+          : [{ type: 'Task', id: 'LIST' }],
     }),
 
     getFilteredTasks: build.query<ITask[], { type: SearchFilterType; value: string }>({
       queryFn: ({ type, value }) => localQuery(() => TaskRepository.filter(value, type)),
-      providesTags: ['Task'],
+      providesTags: (res) =>
+        res
+          ? [...res.map(({ id }) => ({ type: 'Task' as const, id })), { type: 'Task', id: 'LIST' }]
+          : [{ type: 'Task', id: 'LIST' }],
     }),
 
     createTask: build.mutation<ITask, CreateTaskDto>({
@@ -32,7 +42,10 @@ export const taskApi = baseApi.injectEndpoints({
 
     startTask: build.mutation<ITask, string>({
       queryFn: (id) => localQuery(() => TaskRepository.startTask(id)),
-      invalidatesTags: ['Task'],
+      invalidatesTags: (res, err, id) => [
+        { type: 'Task', id },
+        { type: 'Task', id: 'LIST' },
+      ],
     }),
 
     stopTask: build.mutation<ITask, string>({
@@ -56,4 +69,5 @@ export const {
   useStopTaskMutation,
   useCompleteTaskMutation,
   useGetFilteredTasksQuery,
+  useGetTaskByIdQuery,
 } = taskApi;

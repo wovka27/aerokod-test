@@ -3,23 +3,23 @@
 @tailwind utilities;
 
 :root {
-    --background: #f9f9f9;
-    --foreground: #171717;
+  --background: #f9f9f9;
+  --foreground: #171717;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    color: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--background);
 }
 
 @layer utilities {
-    .text-balance {
-        text-wrap: balance;
-    }
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 @layer base {
-    input[type="time"]::-webkit-calendar-picker-indicator {
-        @apply invert brightness-150;
-    }
+  input[type='time']::-webkit-calendar-picker-indicator {
+    @apply invert brightness-150;
+  }
 }

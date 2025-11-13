@@ -25,7 +25,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ taskId }) => {
         onClick={() => router.back()}
         className="mb-6"
       >
-        Back
+        Назад
       </Button>
 
       <TaskCard

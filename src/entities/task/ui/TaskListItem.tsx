@@ -43,11 +43,4 @@ const TaskListItem: React.FC<TaskListItemProps> = ({ task }) => {
   );
 };
 
-export default React.memo(
-  TaskListItem,
-  (prev: any, next: any) =>
-    prev.task.id === next.task.id &&
-    prev.task.status === next.task.status &&
-    prev.task.spentTime === next.task.spentTime &&
-    prev.task.estimatedTime === next.task.estimatedTime
-);
+export default React.memo(TaskListItem);

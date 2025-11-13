@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import clsx from 'clsx';
 import type { PropsWithChildren } from 'react';
@@ -14,6 +15,7 @@ import {
 } from '@entities/task/api/task.api';
 import { useTaskTimer } from '@entities/task/lib/hooks/useTaskTimer';
 import type {
+  DeleteProps,
   TaskCardContextType,
   TaskCardProgressProps,
   TaskCardType,
@@ -181,13 +183,14 @@ const Edit: React.FC = () => {
   );
 };
 
-const Delete: React.FC = () => {
+const Delete: React.FC<DeleteProps> = ({ variant = 'card' }) => {
   const { task } = useTaskCard();
+  const router = useRouter();
   const [deleteTask] = useDeleteTaskMutation();
   const confirm = useConfirm();
 
   const handleDelete = async () => {
-    const confirmed = await confirm({
+    await confirm({
       title: 'Удаление',
       message: 'Удалить задачу?',
       confirmText: 'Удалить',
@@ -195,8 +198,7 @@ const Delete: React.FC = () => {
         await deleteTask(task.id).unwrap();
       },
     });
-
-    if (!confirmed) return;
+    if (variant === 'detail') router.back();
   };
 
   if (task.status === TaskStatus.IN_PROGRESS) return null;

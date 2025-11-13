@@ -37,7 +37,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ taskId }) => {
             <TaskCard.Title variant="detail" />
             <div className="flex gap-2">
               <TaskCard.Edit />
-              <TaskCard.Delete />
+              <TaskCard.Delete variant="detail" />
             </div>
           </TaskCard.Header>
           <div>

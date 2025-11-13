@@ -61,6 +61,10 @@ export interface TitleProps {
   variant?: 'card' | 'detail';
 }
 
+export interface DeleteProps {
+  variant?: 'card' | 'detail';
+}
+
 export type TaskCardType = React.FC<TaskCardProps & { className?: string }> & {
   Header: React.FC<React.PropsWithChildren>;
   Title: React.FC<TitleProps>;
@@ -73,7 +77,7 @@ export type TaskCardType = React.FC<TaskCardProps & { className?: string }> & {
   Progress: React.FC<React.PropsWithChildren<TaskCardProgressProps>>;
   Actions: React.FC<React.PropsWithChildren>;
   Edit: React.FC;
-  Delete: React.FC;
+  Delete: React.FC<DeleteProps>;
   Start: React.FC;
   Stop: React.FC;
   Complete: React.FC;

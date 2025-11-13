@@ -170,7 +170,7 @@ const Actions: React.FC<React.PropsWithChildren> = ({ children }) => (
 const Edit: React.FC = () => {
   const { task, openEdit } = useTaskCard();
 
-  if (task.status === TaskStatus.IN_PROGRESS || task.status === TaskStatus.COMPLETED) return null;
+  if ([TaskStatus.IN_PROGRESS, TaskStatus.COMPLETED].includes(task.status)) return null;
 
   return (
     <Button

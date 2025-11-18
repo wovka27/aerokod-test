@@ -7,13 +7,13 @@ import type { ModalProps } from '@shared/ui/modal/model/modal.types';
 
 type IProps = Omit<ModalProps, 'title' | 'children'> & {
   submit: (dto: UpdateTaskDto | CreateTaskDto) => any;
-  initialValues?: Record<string, any>;
+  initialValues?: Record<string, string>;
   isLoading: boolean;
   title: string;
 };
 
 const TaskForm: React.FC<IProps> = ({ onClose, isOpen, submit, initialValues, isLoading, title }) => {
-  const onSubmit: (values: Record<string, any>) => void | Promise<void> = async (values) => {
+  const onSubmit: (values: Record<string, string>) => Promise<void> = async (values) => {
     const dto = {
       name: values.name,
       description: values.description,

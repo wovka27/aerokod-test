@@ -32,9 +32,7 @@ export const TaskList: React.FC = () => {
         component={TaskListItem}
         items={tasks}
         getKey={(item) => item.id}
-        extraProps={(task) => ({
-          task,
-        })}
+        extraProps={(task) => ({ task })}
       />
     </div>
   );

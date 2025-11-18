@@ -22,9 +22,7 @@ export const TaskList: React.FC = () => {
 
   if (isLoading) return <TaskListSkeleton />;
 
-  if (!tasks.length) {
-    return <div className="flex items-center justify-center min-h-[30vh]">Список пуст...</div>;
-  }
+  if (!tasks.length) return <ListEmpty />;
 
   return (
     <div className="grid gap-5 md:grid-cols-3 grid-cols-1">
@@ -47,3 +45,5 @@ const TaskListSkeleton: React.FC = () => (
     />
   </div>
 );
+
+const ListEmpty = () => <div className="flex items-center justify-center min-h-[30vh]">Список пуст...</div>;

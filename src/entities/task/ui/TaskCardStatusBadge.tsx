@@ -9,18 +9,34 @@ interface Props {
 }
 
 export const TaskCardStatusBadge: React.FC<Props> = ({ task, size = 'md' }) => {
-  const base = clsx('font-medium rounded-full border', size === 'sm' ? 'px-3 py-1 text-xs' : 'px-4 py-2 text-sm');
+  const className = clsx(
+    'font-medium rounded-full border',
+    size === 'sm' ? 'px-3 py-1 text-xs' : 'px-4 py-2 text-sm',
+    statusClasses[task.status]
+  );
 
-  switch (task.status) {
-    case TaskStatus.COMPLETED:
-      return <span className={`${base} bg-green-500/20 text-green-400 border-green-500/30`}>Завершена</span>;
-    case TaskStatus.IN_PROGRESS:
-      return (
-        <span className={`${base} bg-blue-500/20 text-blue-400 border-blue-500/30 animate-pulse`}>Выполняется</span>
-      );
-    case TaskStatus.OVERDUE:
-      return <span className={`${base} bg-red-500/20 text-red-400 border-red-500/30`}>Просрочена</span>;
-    default:
-      return <span className={`${base} bg-gray-500/20 text-gray-400 border-gray-500/30`}>Ожидает</span>;
-  }
+  return (
+    <Badge
+      className={className}
+      text={statusText[task.status]}
+    />
+  );
+};
+
+const Badge: React.FC<{ className: string; text: string }> = ({ className, text }) => {
+  return <span className={className}>{text}</span>;
+};
+
+const statusClasses: Record<TaskStatus, string> = {
+  [TaskStatus.COMPLETED]: 'bg-green-500/20 text-green-400 border-green-500/30',
+  [TaskStatus.IN_PROGRESS]: 'bg-blue-500/20 text-blue-400 border-blue-500/30 animate-pulse',
+  [TaskStatus.OVERDUE]: 'bg-red-500/20 text-red-400 border-red-500/30',
+  [TaskStatus.PENDING]: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+};
+
+const statusText: Record<TaskStatus, string> = {
+  [TaskStatus.COMPLETED]: 'Завершена',
+  [TaskStatus.IN_PROGRESS]: 'Выполняется',
+  [TaskStatus.OVERDUE]: 'Просрочена',
+  [TaskStatus.PENDING]: 'Ожидает',
 };

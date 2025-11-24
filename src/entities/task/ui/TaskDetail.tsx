@@ -2,20 +2,16 @@
 
 import { useRouter } from 'next/navigation';
 
-import { useGetTaskByIdQuery } from '@entities/task/api/task.api';
+import type { ITask } from '@entities/task/model/task.types';
 import { TaskCard } from '@entities/task/ui/TaskCard';
 import { Button } from '@shared/ui/button/Button';
 
 interface TaskDetailProps {
-  taskId: string;
+  task: ITask;
 }
 
-export const TaskDetail: React.FC<TaskDetailProps> = ({ taskId }) => {
+export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
   const router = useRouter();
-
-  const { data: task } = useGetTaskByIdQuery(taskId);
-
-  if (!task) return null;
 
   return (
     <div className="container mx-auto max-w-4xl p-6">

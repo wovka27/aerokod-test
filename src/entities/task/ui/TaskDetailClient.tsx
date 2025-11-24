@@ -16,5 +16,5 @@ export const TaskDetailClient = ({ taskId }: Props) => {
   if (isLoading) return <TaskDetailSkeleton />;
   if (isError || !task) notFound();
 
-  return <TaskDetail taskId={task.id} />;
+  return <TaskDetail task={task} />;
 };

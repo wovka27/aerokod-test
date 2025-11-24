@@ -9,13 +9,8 @@ export const TaskList: React.FC = () => {
   const filter = useAppSelector(filterSelector);
   const hasFilter = Boolean(filter.value);
 
-  const allQuery = useGetTasksQuery(undefined, {
-    skip: hasFilter,
-  });
-
-  const filteredQuery = useGetFilteredTasksQuery(filter, {
-    skip: !hasFilter,
-  });
+  const allQuery = useGetTasksQuery(undefined, skip(hasFilter));
+  const filteredQuery = useGetFilteredTasksQuery(filter, skip(!hasFilter));
 
   const tasks = hasFilter ? (filteredQuery.data ?? []) : (allQuery.data ?? []);
   const isLoading = hasFilter ? filteredQuery.isLoading : allQuery.isLoading;
@@ -40,10 +35,13 @@ const TaskListSkeleton: React.FC = () => (
   <div className="grid gap-5 md:grid-cols-3 grid-cols-1">
     <ListRenderer
       component={TaskCardSkeleton}
-      items={Array.from({ length: 6 })}
+      items={items}
       getKey={(_, index) => index}
     />
   </div>
 );
 
 const ListEmpty = () => <div className="flex items-center justify-center min-h-[30vh]">Список пуст...</div>;
+
+const items = Array.from({ length: 6 });
+const skip = (val: boolean) => ({ skip: val });

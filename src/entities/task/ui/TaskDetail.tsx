@@ -1,28 +1,17 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 import type { ITask } from '@entities/task/model/task.types';
 import { TaskCard } from '@entities/task/ui/TaskCard';
-import { Button } from '@shared/ui/button/Button';
+import BackButton from '@features/backButton/BackButton';
 
 interface TaskDetailProps {
   task: ITask;
 }
 
 export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
-  const router = useRouter();
-
   return (
     <div className="container mx-auto max-w-4xl p-6">
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={() => router.back()}
-        className="mb-6"
-      >
-        Назад
-      </Button>
+      <BackButton />
 
       <TaskCard
         task={task}

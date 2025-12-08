@@ -55,36 +55,33 @@ export const FormGenerator: React.FC<PropsWithChildren<FormGeneratorProps>> = ({
 
       const fieldRef = currentPath.reduce((acc, key) => acc[key], form.fields);
 
+      const props = {
+        id: field.id,
+        name: field.id,
+        type: field.type,
+        label: field.label,
+        value: fieldRef.value,
+        error: fieldRef.error,
+        onBlur: fieldRef.onBlur,
+        onFocus: fieldRef.onFocus,
+        className: field.className,
+      };
+
       switch (field.type) {
         case 'textarea':
           return (
             <Textarea
+              {...props}
               key={field.id}
-              label={field.label}
-              name={field.id}
-              id={field.id}
-              value={fieldRef.value}
-              error={fieldRef.error}
-              onBlur={fieldRef.onBlur}
-              onFocus={fieldRef.onFocus}
-              className={field.className}
               onChange={(event) => fieldRef.setValue(event.target.value)}
             />
           );
         default:
           return (
             <Input
+              {...props}
               key={field.id}
-              name={field.id}
-              id={field.id}
               isFullWidth={field.isFullWidth}
-              label={field.label}
-              type={field.type}
-              value={fieldRef.value}
-              error={fieldRef.error}
-              onBlur={fieldRef.onBlur}
-              onFocus={fieldRef.onFocus}
-              className={field.className}
               onChange={(event) => fieldRef.setValue(event.target.value)}
             />
           );

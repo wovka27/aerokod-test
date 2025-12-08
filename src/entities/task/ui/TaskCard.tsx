@@ -196,9 +196,9 @@ const Delete: React.FC<DeleteProps> = ({ variant = 'card' }) => {
       confirmText: 'Удалить',
       onConfirm: async () => {
         await deleteTask(task.id).unwrap();
+        if (variant === 'detail') router.back();
       },
     });
-    if (variant === 'detail') router.back();
   };
 
   if (task.status === TaskStatus.IN_PROGRESS) return null;

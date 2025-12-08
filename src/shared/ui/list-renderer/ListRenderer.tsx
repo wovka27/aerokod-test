@@ -21,20 +21,16 @@ export function ListRenderer<TItem, TChildProps extends object = {}>({
   getKey,
   extraProps,
 }: ListRendererProps<TItem, TChildProps>) {
-  return (
-    <>
-      {items.map((item, index) => {
-        const injected: InjectedListItemProps<TItem> = { item, index };
-        const childProps = extraProps?.(item) ?? ({} as TChildProps);
+  return items.map((item, index) => {
+    const injected: InjectedListItemProps<TItem> = { item, index };
+    const childProps = extraProps?.(item) ?? ({} as TChildProps);
 
-        return (
-          <Component
-            key={getKey(item, index)}
-            {...injected}
-            {...childProps}
-          />
-        );
-      })}
-    </>
-  );
+    return (
+      <Component
+        key={getKey(item, index)}
+        {...injected}
+        {...childProps}
+      />
+    );
+  });
 }

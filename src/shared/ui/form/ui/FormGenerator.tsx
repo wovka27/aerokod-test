@@ -56,15 +56,11 @@ export const FormGenerator: React.FC<PropsWithChildren<FormGeneratorProps>> = ({
       const fieldRef = currentPath.reduce((acc, key) => acc[key], form.fields);
 
       const props = {
-        id: field.id,
-        name: field.id,
-        type: field.type,
-        label: field.label,
+        ...field,
         value: fieldRef.value,
         error: fieldRef.error,
         onBlur: fieldRef.onBlur,
         onFocus: fieldRef.onFocus,
-        className: field.className,
       };
 
       switch (field.type) {
